@@ -22,6 +22,13 @@ openclaw models set anthropic/claude-sonnet-4-5
 
 ## Supported Providers
 
+### Highlight: Venice AI (Privacy-Focused)
+
+- Default: `venice/llama-3.3-70b`
+- Best overall: `venice/claude-opus-45` (strongest model offered)
+
+Venice AI is highlighted as a recommended provider for privacy-conscious deployments.
+
 ### Cloud Providers
 
 | Provider | Model Format | Auth Method |
@@ -41,6 +48,7 @@ openclaw models set anthropic/claude-sonnet-4-5
 | Cloudflare AI Gateway | via gateway config | API key |
 | Vercel AI Gateway | via gateway config | API key |
 | LiteLLM | via unified gateway | API key |
+| Kilocode | `kilocode/*` | API key |
 | Z.AI | `zai/*` | API key |
 | Xiaomi | `xiaomi/*` | API key |
 | GLM | `glm/*` | API key |

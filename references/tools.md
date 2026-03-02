@@ -281,6 +281,24 @@ Parameters:
 
 Requires `agents.defaults.imageModel` to be configured.
 
+## PDF Tool
+
+Analyze PDF documents using configured model.
+
+Parameters:
+- `pdf` (single path or URL)
+- `pdfs` (multiple paths or URLs, up to 10)
+- `prompt` (optional; defaults to "Analyze this PDF document.")
+- `pages` (optional page range like `1-5` or `1,3,7-9`)
+- `model` (optional override)
+- `maxBytesMb` (optional size cap)
+
+Notes:
+- Native PDF mode supported for Anthropic and Google models
+- Non-native models use extraction fallback (text → rasterized page images)
+- `pages` filtering only works in extraction fallback mode
+- Defaults: `agents.defaults.pdfModel`, `agents.defaults.pdfMaxBytesMb`, `agents.defaults.pdfMaxPages`
+
 ## Message Tool
 
 Send messages and perform channel-specific actions.
@@ -361,15 +379,33 @@ Notes:
 
 ### sessions_list / sessions_history / sessions_send / sessions_spawn / session_status
 
-- **sessions_list**: List active sessions
-- **sessions_history**: View session chat history
-- **sessions_send**: Send message to a session
-- **sessions_spawn**: Create a new sub-session
-- **session_status**: Current session info
+- **sessions_list**: `kinds?`, `limit?`, `activeMinutes?`, `messageLimit?` (0 = none)
+- **sessions_history**: `sessionKey` (or `sessionId`), `limit?`, `includeTools?`
+- **sessions_send**: `sessionKey` (or `sessionId`), `message`, `timeoutSeconds?` (0 = fire-and-forget)
+- **sessions_spawn**: Create sub-agent or ACP session
+  - `task`, `label?`, `runtime?` (`"subagent"` | `"acp"`), `agentId?`, `model?`, `thinking?`
+  - `cwd?`, `runTimeoutSeconds?`, `thread?`, `mode?` (`"run"` | `"session"`), `cleanup?`, `sandbox?`
+  - `attachments?` (inline files, subagent only), `attachAs?`
+  - Supports one-shot mode (`mode: "run"`) and persistent thread-bound mode (`mode: "session"` with `thread: true`)
+  - Non-blocking: returns `status: "accepted"` immediately
+  - Attachments: materialized at `.openclaw/attachments/<uuid>/` with `.manifest.json`
+  - Configure limits: `tools.sessions_spawn.attachments` (enabled, maxTotalBytes, maxFiles, maxFileBytes)
+- **session_status**: `sessionKey?` (default current), `model?`
+
+Notes:
+- `main` is the canonical direct-chat key; `global`/`unknown` are hidden
+- `messageLimit > 0` fetches last N messages per session
+- Session visibility: `tools.sessions.visibility` (default `tree`: current + spawned sessions)
+- For shared agents: set `tools.sessions.visibility: "self"` to prevent cross-session browsing
+- `sessions_send` supports ping-pong (reply `REPLY_SKIP` to stop; max via `session.agentToAgent.maxPingPongTurns`)
+- Sandbox clamp: when sandboxed, `sessionToolsVisibility` clamps to `tree`
 
 ### agents_list
 
-List configured agents and their bindings.
+List configured agents for `sessions_spawn`.
+
+- Result restricted to per-agent allowlists (`agents.list[].subagents.allowAgents`)
+- When `["*"]` configured, includes all agents with `allowAny: true`
 
 ## Memory Tools
 
@@ -392,6 +428,7 @@ See also: [Plugins (detailed)](plugins.md), [Skills (detailed)](skills.md).
 - **Lobster**: Typed workflow runtime with resumable approvals (requires Lobster CLI). See [Lobster (detailed)](lobster.md).
 - **LLM Task**: JSON-only LLM step for structured workflow output. See [LLM Task (detailed)](llm_task.md).
 - **OpenProse**: Multi-agent program runtime with parallelism and approvals. See [OpenProse (detailed)](openprose.md).
+- **Diffs**: Read-only diff viewer and PNG renderer. See [Diffs & Firecrawl (detailed)](diffs_firecrawl.md).
 
 ## Common Parameters
 

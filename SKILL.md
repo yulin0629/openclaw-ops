@@ -32,6 +32,14 @@ OpenClaw is a self-hosted, open-source (MIT) gateway that routes AI agents acros
 | [config_reference.md](references/config_reference.md) | Full config field reference |
 | [gateway_ops.md](references/gateway_ops.md) | Gateway operations |
 | [remote_access.md](references/remote_access.md) | Remote access, SSH, Tailscale, web dashboard |
+| [sessions.md](references/sessions.md) | Session management, DM isolation, lifecycle, compaction |
+| [automation.md](references/automation.md) | Cron jobs, webhooks, Gmail Pub/Sub |
+| [acp_agents.md](references/acp_agents.md) | ACP agents: spawn external AI runtimes (Codex, Claude, etc.) |
+| [install.md](references/install.md) | Installation, updating, rollback, migration, uninstall |
+| [web_ui.md](references/web_ui.md) | Web surfaces: Dashboard, Control UI, WebChat |
+| [slash_commands.md](references/slash_commands.md) | Chat slash commands (/new, /model, /acp, etc.) |
+| [platforms.md](references/platforms.md) | Platform-specific guides (macOS, iOS, Android, Linux, Windows) |
+| [diffs_firecrawl.md](references/diffs_firecrawl.md) | Diffs plugin + Firecrawl anti-bot fallback |
 
 ## Quick Reference
 
@@ -59,6 +67,12 @@ openclaw logs --follow             # Tail gateway logs
 openclaw channels status --probe   # Channel health check
 openclaw security audit            # Security posture check
 openclaw security audit --fix      # Auto-fix security issues
+openclaw update                    # Self-update
+openclaw dashboard                 # Open Control UI in browser
+openclaw tui                       # Terminal UI (interactive REPL)
+openclaw agent                     # Direct agent interaction via CLI
+openclaw health                    # Health check
+openclaw usage                     # Usage tracking
 ```
 
 ### Default Gateway
@@ -214,10 +228,16 @@ openclaw secrets audit                  # Scan for plaintext leaks
 
 ### Update / Uninstall
 
+For detailed installation, updating, rollback, and migration guide, see [references/install.md](references/install.md).
+
 ```bash
+# Install (recommended)
+curl -fsSL https://openclaw.ai/install.sh | bash
+
 # Update
-npm install -g openclaw@latest
-openclaw doctor          # Run after update to apply migrations
+openclaw update                    # Self-update command
+# Or: npm install -g openclaw@latest
+openclaw doctor                    # Run after update to apply migrations
 
 # Uninstall
 openclaw uninstall
@@ -238,6 +258,10 @@ For specific tools, see:
 - [references/plugins.md](references/plugins.md) — Plugin system (install, author, distribute)
 - [references/skills.md](references/skills.md) — Skills system (load, config, ClawHub)
 
+For ACP agents (Codex, Claude Code, Gemini CLI, etc.), see [references/acp_agents.md](references/acp_agents.md).
+For Diffs plugin and Firecrawl anti-bot fallback, see [references/diffs_firecrawl.md](references/diffs_firecrawl.md).
+For chat slash commands (/new, /model, /acp, etc.), see [references/slash_commands.md](references/slash_commands.md).
+
 **Tool profiles**: `minimal`, `coding`, `messaging`, `full` (default).
 
 **Tool groups** (for allow/deny):
@@ -250,6 +274,7 @@ For specific tools, see:
 - `group:automation` — cron, gateway
 - `group:messaging` — message
 - `group:nodes` — nodes
+- `group:openclaw` — all built-in OpenClaw tools (excludes provider plugins)
 
 ## Common Failure Signatures
 
@@ -273,4 +298,8 @@ For specific tools, see:
 | `OPENCLAW_STATE_DIR` | Override state directory |
 | `OPENCLAW_HOME` | Override home directory |
 | `OPENCLAW_LOAD_SHELL_ENV` | Import shell env (set to `1`) |
+| `OPENCLAW_VERBOSE` | Verbose logging |
+| `OPENCLAW_LOG_FILE` | File logging path |
+| `OPENCLAW_LOG_LEVEL` | Log level control |
 | `BRAVE_API_KEY` | For web_search tool |
+| `FIRECRAWL_API_KEY` | For Firecrawl anti-bot fallback |
