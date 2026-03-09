@@ -44,7 +44,18 @@ OpenClaw is a self-hosted, open-source (MIT) gateway that routes AI agents acros
 | [platforms.md](references/platforms.md) | Platform-specific guides (macOS, iOS, Android, Linux, Windows) |
 | [diffs_firecrawl.md](references/diffs_firecrawl.md) | Diffs plugin + Firecrawl anti-bot fallback |
 | [subagents.md](references/subagents.md) | Sub-agents: nested spawning, thread binding, announce, tool policy |
-| [memory.md](references/memory.md) | Memory system, vector search, hybrid BM25, compaction |
+| [memory.md](references/memory.md) | Memory system, vector search, hybrid BM25, compaction, QMD backend |
+| [architecture.md](references/architecture.md) | Gateway architecture, wire protocol, pairing, invariants |
+| [agent_runtime.md](references/agent_runtime.md) | Agent runtime, bootstrap files, agent loop, hooks, timeouts |
+| [streaming.md](references/streaming.md) | Streaming + chunking: block streaming, coalescing, preview modes |
+| [queue.md](references/queue.md) | Command queue: modes (steer/followup/collect), concurrency, per-session |
+| [model_failover.md](references/model_failover.md) | Model failover, OAuth, auth profiles, cooldowns, billing disables |
+| [clawhub.md](references/clawhub.md) | ClawHub: public skill registry, CLI commands, publish/install |
+| [thinking.md](references/thinking.md) | Thinking levels, verbose directives, reasoning visibility |
+| [polls.md](references/polls.md) | Polls: Telegram, WhatsApp, Discord, MS Teams |
+| [voice.md](references/voice.md) | Talk Mode (voice interaction) + Voice Wake (wake words) |
+| [presence_discovery.md](references/presence_discovery.md) | Presence system, discovery (Bonjour/Tailscale), transports |
+
 
 ## Quick Reference
 
@@ -56,6 +67,9 @@ OpenClaw is a self-hosted, open-source (MIT) gateway that routes AI agents acros
 | `~/.openclaw/.env` | Global env fallback |
 | `~/.openclaw/workspace` | Default agent workspace |
 | `~/.openclaw/agents/<id>/` | Per-agent state + sessions |
+| `~/.openclaw/skills/` | Managed/local skills |
+| `~/.openclaw/agents/<id>/qmd/` | QMD memory backend state |
+| `~/.openclaw/agents/<id>/agent/auth-profiles.json` | Auth profiles + OAuth tokens |
 | `OPENCLAW_CONFIG_PATH` | Override config location |
 | `OPENCLAW_STATE_DIR` | Override state directory |
 | `OPENCLAW_HOME` | Override home directory |
@@ -85,6 +99,10 @@ openclaw agents bindings           # Agent-channel bindings
 openclaw agents bind               # Bind agent to account
 openclaw agents unbind             # Unbind agent
 openclaw update --dry-run          # Preview update
+openclaw system presence           # View connected clients/nodes
+openclaw system heartbeat last     # Last heartbeat info
+openclaw memory search <query>     # CLI memory search
+openclaw docs <query>              # Search OpenClaw docs
 ```
 
 ### Default Gateway
@@ -273,6 +291,16 @@ For specific tools, see:
 For ACP agents (Codex, Claude Code, Gemini CLI, etc.), see [references/acp_agents.md](references/acp_agents.md).
 For Diffs plugin and Firecrawl anti-bot fallback, see [references/diffs_firecrawl.md](references/diffs_firecrawl.md).
 For chat slash commands (/new, /model, /acp, etc.), see [references/slash_commands.md](references/slash_commands.md).
+For thinking levels (/think, /verbose, /reasoning), see [references/thinking.md](references/thinking.md).
+For polls (Telegram, WhatsApp, Discord, MS Teams), see [references/polls.md](references/polls.md).
+For Talk Mode and Voice Wake, see [references/voice.md](references/voice.md).
+For Gateway architecture and wire protocol, see [references/architecture.md](references/architecture.md).
+For agent runtime and loop details, see [references/agent_runtime.md](references/agent_runtime.md).
+For command queue system, see [references/queue.md](references/queue.md).
+For model failover and OAuth, see [references/model_failover.md](references/model_failover.md).
+For ClawHub skill registry, see [references/clawhub.md](references/clawhub.md).
+For presence and discovery, see [references/presence_discovery.md](references/presence_discovery.md).
+For streaming and chunking, see [references/streaming.md](references/streaming.md).
 
 **Tool profiles**: `minimal`, `coding`, `messaging`, `full` (default).
 
@@ -316,3 +344,9 @@ For chat slash commands (/new, /model, /acp, etc.), see [references/slash_comman
 | `OPENCLAW_SHELL` | Set by OpenClaw in exec/acp/tui runtimes |
 | `BRAVE_API_KEY` | For web_search tool |
 | `FIRECRAWL_API_KEY` | For Firecrawl anti-bot fallback |
+| `ELEVENLABS_API_KEY` | For Talk Mode TTS |
+| `ELEVENLABS_VOICE_ID` | Default voice for Talk Mode |
+| `CLAWHUB_TOKEN` | ClawHub API token for CI/automation |
+| `CLAWHUB_WORKDIR` | ClawHub working directory override |
+| `OLLAMA_API_KEY` | For Ollama embeddings provider |
+

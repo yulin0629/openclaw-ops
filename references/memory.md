@@ -315,7 +315,67 @@ Separate from compaction. See: [Session Pruning](https://docs.openclaw.ai/concep
 }
 ```
 
+## QMD Backend (Experimental)
+
+An alternative memory backend using [QMD](https://github.com/tobi/qmd) for local vector search.
+
+### Setup
+
+- Disabled by default. Opt in per-config: `memory.backend = "qmd"`.
+- Install QMD CLI separately: `bun install -g https://github.com/tobi/qmd` and ensure `qmd` binary is on the Gateway's `PATH`.
+- Requires SQLite build that allows extensions (`brew install sqlite` on macOS).
+- Runs fully locally via Bun + node-llama-cpp, auto-downloads GGUF models from HuggingFace on first use (no Ollama daemon required).
+
+### State Location
+
+- Gateway runs QMD in a self-contained XDG home under `~/.openclaw/agents/<agentId>/qmd/` by setting `XDG_CONFIG_HOME` and `XDG_CACHE_HOME`.
+
+### Behavior
+
+- Collections created from `memory.qmd.paths` plus default workspace memory files.
+- `qmd update` + `qmd embed` run on boot and on a configurable interval (`memory.qmd.update.interval`, default 5 min).
+- Boot refresh runs in the background by default (set `memory.qmd.update.waitForBootSync = true` for blocking behavior).
+- Search via `memory.qmd.searchMode` (default `qmd search --json`; also supports `vsearch` and `query`).
+- If QMD fails or the binary is missing, OpenClaw automatically falls back to the builtin SQLite manager.
+
+### Pre-downloading Models
+
+```bash
+STATE_DIR="${OPENCLAW_STATE_DIR:-$HOME/.openclaw}"
+export XDG_CONFIG_HOME="$STATE_DIR/agents/main/qmd/xdg-config"
+export XDG_CACHE_HOME="$STATE_DIR/agents/main/qmd/xdg-cache"
+qmd query "test"  # triggers model download
+```
+
+### OS Support
+
+- macOS and Linux work out of the box once Bun + SQLite are installed.
+- Windows is best supported via WSL2.
+
+## Ollama Embeddings
+
+`memorySearch.provider = "ollama"` is supported for local/self-hosted Ollama embeddings (`/api/embeddings`), but it is **not auto-selected**. Must be explicitly configured.
+
+```json5
+{
+  agents: {
+    defaults: {
+      memorySearch: {
+        provider: "ollama",
+      },
+    },
+  },
+}
+```
+
+Environment: `OLLAMA_API_KEY=ollama-local` (if needed).
+
+## Session Memory Search (Experimental)
+
+Search across session transcripts, not just memory files. Experimental feature.
+
 ## See Also
 
 - [Sessions](sessions.md) — session management, lifecycle, maintenance
 - [Tools](tools.md) — `memory_search` and `memory_get` tool parameters
+- [Streaming](streaming.md) — block streaming and chunking
