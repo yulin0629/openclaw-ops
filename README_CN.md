@@ -24,12 +24,18 @@ OpenClaw-Skill/
 └── references/
     ├── architecture.md          # Gateway 架构、WebSocket 协议、配对、不变量
     ├── agent_runtime.md         # Agent 运行时、引导文件、Agent Loop、Hooks、超时
+    ├── bonjour.md               # Bonjour/mDNS：TXT 键、广域 DNS-SD、调试
+    ├── channel_routing.md       # 频道路由、Session Key、Mattermost、BlueBubbles
     ├── channels.md              # 20+ 频道配置指南（WhatsApp、Telegram、Discord 等）
     ├── clawhub.md               # ClawHub 公共 Skill 注册中心、CLI 命令
+    ├── gateway_internals.md     # 网络模型、Gateway 锁、健康检查、Doctor、日志、后台执行
     ├── gateway_ops.md           # Gateway 运维、服务管理
+    ├── heartbeat.md             # 心跳：配置、投递、可见性、HEARTBEAT.md
+    ├── media.md                 # 媒体：相机拍摄、图像、音频/语音笔记、转录
     ├── memory.md                # 记忆系统、向量搜索、混合 BM25、QMD 后端
     ├── model_failover.md        # 模型故障转移、OAuth、认证配置、冷却策略
     ├── multi_agent.md           # 多 Agent 路由、Bindings、Agent 配置
+    ├── pairing.md               # Gateway 配对：节点审批、CLI、API、自动审批
     ├── polls.md                 # 投票功能（Telegram、WhatsApp、Discord、MS Teams）
     ├── presence_discovery.md    # Presence 系统、发现机制（Bonjour/Tailscale）
     ├── providers.md             # 20+ 模型提供商（Anthropic、OpenAI、Ollama 等）
@@ -37,11 +43,12 @@ OpenClaw-Skill/
     ├── security.md              # 认证、访问控制、加固基线
     ├── streaming.md             # 块流式传输、分块、合并、预览模式
     ├── thinking.md              # 思考级别、详细模式指令、推理可见性
+    ├── tui.md                   # TUI：快捷键、斜杠命令、选择器、本地 Shell
     ├── voice.md                 # Talk Mode（语音交互）+ Voice Wake（唤醒词）
-    └── ... (共 44 个参考文件)
+    └── ... (共 51 个参考文件)
 ```
 
-**共计约 4,000+ 行**结构化参考文档，覆盖 OpenClaw 所有核心功能。
+**共计约 5,500+ 行**结构化参考文档，覆盖 OpenClaw 所有核心功能。
 
 ## 安装方法
 

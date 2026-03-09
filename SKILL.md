@@ -55,6 +55,14 @@ OpenClaw is a self-hosted, open-source (MIT) gateway that routes AI agents acros
 | [polls.md](references/polls.md) | Polls: Telegram, WhatsApp, Discord, MS Teams |
 | [voice.md](references/voice.md) | Talk Mode (voice interaction) + Voice Wake (wake words) |
 | [presence_discovery.md](references/presence_discovery.md) | Presence system, discovery (Bonjour/Tailscale), transports |
+| [gateway_internals.md](references/gateway_internals.md) | Network model, gateway lock, health checks, doctor, logging, background exec |
+| [heartbeat.md](references/heartbeat.md) | Heartbeat: config, delivery, visibility, HEARTBEAT.md, per-agent |
+| [bonjour.md](references/bonjour.md) | Bonjour/mDNS: TXT keys, wide-area DNS-SD, debugging, failure modes |
+| [pairing.md](references/pairing.md) | Gateway pairing: node approval, CLI, API, auto-approval, storage |
+| [tui.md](references/tui.md) | TUI: keyboard shortcuts, slash commands, pickers, local shell, delivery |
+| [media.md](references/media.md) | Media: camera capture, images, audio/voice notes, transcription |
+| [channel_routing.md](references/channel_routing.md) | Channel routing, session keys, agent selection, Mattermost, BlueBubbles |
+
 
 
 ## Quick Reference
@@ -101,8 +109,14 @@ openclaw agents unbind             # Unbind agent
 openclaw update --dry-run          # Preview update
 openclaw system presence           # View connected clients/nodes
 openclaw system heartbeat last     # Last heartbeat info
+openclaw system heartbeat now      # Trigger heartbeat immediately
 openclaw memory search <query>     # CLI memory search
 openclaw docs <query>              # Search OpenClaw docs
+openclaw nodes pending             # List pending pairing requests
+openclaw nodes approve <id>        # Approve node pairing
+openclaw nodes status              # Show all paired nodes
+openclaw health --json             # Full health snapshot (JSON)
+openclaw message send --media <p>  # Send media message
 ```
 
 ### Default Gateway
@@ -301,6 +315,13 @@ For model failover and OAuth, see [references/model_failover.md](references/mode
 For ClawHub skill registry, see [references/clawhub.md](references/clawhub.md).
 For presence and discovery, see [references/presence_discovery.md](references/presence_discovery.md).
 For streaming and chunking, see [references/streaming.md](references/streaming.md).
+For Gateway internals (network model, lock, health, doctor, logging), see [references/gateway_internals.md](references/gateway_internals.md).
+For heartbeat system, see [references/heartbeat.md](references/heartbeat.md).
+For Bonjour/mDNS discovery details, see [references/bonjour.md](references/bonjour.md).
+For Gateway node pairing, see [references/pairing.md](references/pairing.md).
+For Terminal UI (TUI), see [references/tui.md](references/tui.md).
+For media (camera, images, audio), see [references/media.md](references/media.md).
+For channel routing and session keys, see [references/channel_routing.md](references/channel_routing.md).
 
 **Tool profiles**: `minimal`, `coding`, `messaging`, `full` (default).
 

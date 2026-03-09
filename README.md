@@ -24,12 +24,18 @@ OpenClaw-Skill/
 └── references/              
     ├── architecture.md          # Gateway architecture, wire protocol, pairing, invariants
     ├── agent_runtime.md         # Agent runtime, bootstrap, agent loop, hooks, timeouts
+    ├── bonjour.md               # Bonjour/mDNS: TXT keys, wide-area DNS-SD, debugging
+    ├── channel_routing.md       # Channel routing, session keys, Mattermost, BlueBubbles
     ├── channels.md              # 20+ channel setup guides (WhatsApp, Telegram, Discord, etc.)
     ├── clawhub.md               # ClawHub public skill registry, CLI commands
+    ├── gateway_internals.md     # Network model, lock, health, doctor, logging, background exec
     ├── gateway_ops.md           # Gateway operations, service management
+    ├── heartbeat.md             # Heartbeat: config, delivery, visibility, HEARTBEAT.md
+    ├── media.md                 # Media: camera capture, images, audio/voice notes, transcription
     ├── memory.md                # Memory system, vector search, hybrid BM25, QMD backend
     ├── model_failover.md        # Model failover, OAuth, auth profiles, cooldowns
     ├── multi_agent.md           # Multi-agent routing, bindings, per-agent config
+    ├── pairing.md               # Gateway pairing: node approval, CLI, API, auto-approval
     ├── polls.md                 # Polls (Telegram, WhatsApp, Discord, MS Teams)
     ├── presence_discovery.md    # Presence system, discovery (Bonjour/Tailscale)
     ├── providers.md             # 20+ model providers (Anthropic, OpenAI, Ollama, etc.)
@@ -37,11 +43,12 @@ OpenClaw-Skill/
     ├── security.md              # Auth, access control, hardening baseline
     ├── streaming.md             # Block streaming, chunking, coalescing, preview modes
     ├── thinking.md              # Thinking levels, verbose directives, reasoning visibility
+    ├── tui.md                   # TUI: keyboard shortcuts, slash commands, pickers, local shell
     ├── voice.md                 # Talk Mode (voice interaction) + Voice Wake (wake words)
-    └── ... (44 reference files total)
+    └── ... (51 reference files total)
 ```
 
-**Total: ~4,000+ lines** of structured reference covering all core OpenClaw functionality.
+**Total: ~5,500+ lines** of structured reference covering all core OpenClaw functionality.
 
 ## Installation
 
