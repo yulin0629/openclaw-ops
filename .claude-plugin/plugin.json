@@ -1,0 +1,12 @@
+{
+  "name": "openclaw-ops",
+  "description": "Comprehensive guide for installing, configuring, operating, and troubleshooting OpenClaw — a self-hosted, multi-channel AI agent gateway.",
+  "version": "1.0.0",
+  "author": {
+    "name": "yulin0629",
+    "url": "https://github.com/yulin0629"
+  },
+  "repository": "https://github.com/yulin0629/OpenClaw-Skill",
+  "license": "MIT",
+  "keywords": ["openclaw", "gateway", "ai-agent", "multi-channel", "operations"]
+}
