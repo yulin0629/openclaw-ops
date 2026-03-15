@@ -1,0 +1,24 @@
+{
+  "name": "openclaw-ops",
+  "owner": {
+    "name": "yulin0629",
+    "email": "yulin0629@gmail.com"
+  },
+  "metadata": {
+    "description": "OpenClaw AI agent gateway operation guide and troubleshooting skill"
+  },
+  "plugins": [
+    {
+      "name": "openclaw-ops",
+      "source": "./",
+      "description": "Comprehensive guide for installing, configuring, operating, and troubleshooting OpenClaw — a self-hosted, multi-channel AI agent gateway.",
+      "version": "1.0.0",
+      "author": {
+        "name": "yulin0629"
+      },
+      "repository": "https://github.com/yulin0629/openclaw-ops",
+      "license": "MIT",
+      "keywords": ["openclaw", "gateway", "ai-agent", "multi-channel", "operations"]
+    }
+  ]
+}
