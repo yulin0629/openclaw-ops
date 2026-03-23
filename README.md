@@ -38,7 +38,7 @@ OpenClaw-Skill/
     ├── pairing.md               # Gateway pairing: node approval, CLI, API, auto-approval
     ├── polls.md                 # Polls (Telegram, WhatsApp, Discord, MS Teams)
     ├── presence_discovery.md    # Presence system, discovery (Bonjour/Tailscale)
-    ├── providers.md             # 20+ model providers (Anthropic, OpenAI, Ollama, etc.)
+    ├── providers.md             # 35+ model providers (Anthropic, OpenAI, Google, Ollama, etc.)
     ├── queue.md                 # Command queue: steer/followup/collect modes
     ├── security.md              # Auth, access control, hardening baseline
     ├── streaming.md             # Block streaming, chunking, coalescing, preview modes
@@ -138,8 +138,12 @@ This skill is built from the official [OpenClaw Documentation](https://docs.open
 - [Talk Mode & Voice Wake](https://docs.openclaw.ai/nodes/talk)
 - [Polls](https://docs.openclaw.ai/automation/poll)
 - [Presence & Discovery](https://docs.openclaw.ai/concepts/presence)
-- [ACP Agents](https://docs.openclaw.ai/pi)
+- [ACP Agents](https://docs.openclaw.ai/tools/acp-agents)
+- [Sandboxing](https://docs.openclaw.ai/gateway/sandboxing)
+- [Automation (Cron, Webhooks, Hooks)](https://docs.openclaw.ai/automation/cron-jobs)
+- [Standing Orders](https://docs.openclaw.ai/automation/standing-orders)
 - [Security](https://docs.openclaw.ai/gateway/security)
+- [Formal Verification](https://docs.openclaw.ai/security/formal-verification)
 - [Troubleshooting](https://docs.openclaw.ai/gateway/troubleshooting)
 - [CLI Reference](https://docs.openclaw.ai/cli)
 

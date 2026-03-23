@@ -137,6 +137,25 @@ Auth for remote CDP:
 }
 ```
 
+## Browserbase (Hosted Remote CDP)
+
+Cloud headless browser with CAPTCHA solving capabilities.
+
+```json5
+{
+  browser: {
+    enabled: true,
+    defaultProfile: "browserbase",
+    profiles: {
+      browserbase: {
+        cdpUrl: "wss://connect.browserbase.com?apiKey=<BROWSERBASE_API_KEY>",
+        color: "#6B4FBB",
+      },
+    },
+  },
+}
+```
+
 ## Chrome Extension Relay
 
 [Chrome extension](https://docs.openclaw.ai/tools/chrome-extension):

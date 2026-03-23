@@ -89,11 +89,11 @@ Natural-language triggers:
 /acp close
 /acp status
 /acp set-mode plan
-/acp set model openai/gpt-5.2
+/acp set model openai/gpt-5.4
 /acp cwd /Users/user/Projects/repo
 /acp permissions strict
 /acp timeout 120
-/acp model anthropic/claude-opus-4-5
+/acp model anthropic/claude-opus-4-6
 /acp reset-options
 /acp sessions
 /acp doctor
@@ -157,6 +157,7 @@ When a `/acp` command refers to a target session, resolution order:
 | Codex | `codex` |
 | OpenCode | `opencode` |
 | Gemini CLI | `gemini` |
+| Kimi | `kimi` |
 
 Custom agents can be added with `--agent <command>`.
 
@@ -169,7 +170,7 @@ Custom agents can be added with `--agent <command>`.
     dispatch: { enabled: true },
     backend: "acpx",
     defaultAgent: "codex",
-    allowedAgents: ["pi", "claude", "codex", "opencode", "gemini"],
+    allowedAgents: ["pi", "claude", "codex", "opencode", "gemini", "kimi"],
     maxConcurrentSessions: 8,
     stream: {
       coalesceIdleMs: 300,
@@ -187,7 +188,10 @@ Custom agents can be added with `--agent <command>`.
 ### Install acpx Backend
 
 ```bash
-# From registry
+# Quick install
+openclaw plugins install acpx
+
+# From registry (full name)
 openclaw plugins install @openclaw/acpx
 openclaw config set plugins.entries.acpx.enabled true
 

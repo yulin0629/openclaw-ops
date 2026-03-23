@@ -9,6 +9,8 @@
 - [Workspace Access](#workspace-access)
 - [Custom Bind Mounts](#custom-bind-mounts)
 - [Docker Configuration](#docker-configuration)
+- [SSH Backend](#ssh-backend)
+- [OpenShell Backend](#openshell-backend)
 - [Browser Sandboxing](#browser-sandboxing)
 - [Multi-Agent Overrides](#multi-agent-overrides)
 - [Tool Policy Integration](#tool-policy-integration)
@@ -132,6 +134,49 @@ Format: `"hostPath:containerPath:mode"` (mode = `ro` or `rw`)
 - `user` must be root (`"0:0"`) for package installs
 - `readOnlyRoot` must be `false` for writes
 - Container does NOT inherit `process.env` — use `docker.env` for API keys
+
+## SSH Backend
+
+Execute tool commands on remote SSH-accessible machines.
+
+```json5
+{
+  agents: {
+    defaults: {
+      sandbox: {
+        backend: "ssh",
+        ssh: {
+          host: "build-server.example.com",
+          user: "agent",
+          port: 22,
+        },
+      },
+    },
+  },
+}
+```
+
+## OpenShell Backend
+
+Managed remote environments with two workspace modes:
+
+- **Mirror**: Syncs workspace to remote environment
+- **Remote**: Uses remote workspace directly
+
+```json5
+{
+  agents: {
+    defaults: {
+      sandbox: {
+        backend: "openshell",
+        openshell: {
+          mode: "mirror",        // "mirror" | "remote"
+        },
+      },
+    },
+  },
+}
+```
 
 ## Browser Sandboxing
 

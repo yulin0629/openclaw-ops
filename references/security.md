@@ -38,6 +38,7 @@
 - [Secret Scanning (detect-secrets)](#secret-scanning-detect-secrets)
 - [Incident Response](#incident-response)
 - [The Threat Model](#the-threat-model)
+- [Formal Verification](#formal-verification)
 - [Reporting Security Issues](#reporting-security-issues)
 
 ## Security Model
@@ -765,6 +766,19 @@ A malicious external actor can:
 - Probe for infrastructure details
 
 **Defense**: Layer access controls (identity → scope → model), sandbox where possible, monitor via logs.
+
+## Formal Verification
+
+TLA+/TLC models providing machine-checked security policy enforcement.
+
+Repository: https://github.com/vignesh07/openclaw-formal-models
+
+Verification categories:
+- Gateway exposure
+- Nodes.run pipeline
+- Pairing store
+- Ingress gating
+- Routing/session isolation
 
 ## Reporting Security Issues
 
