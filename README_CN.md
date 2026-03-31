@@ -38,7 +38,7 @@ OpenClaw-Skill/
     ├── pairing.md               # Gateway 配对：节点审批、CLI、API、自动审批
     ├── polls.md                 # 投票功能（Telegram、WhatsApp、Discord、MS Teams）
     ├── presence_discovery.md    # Presence 系统、发现机制（Bonjour/Tailscale）
-    ├── providers.md             # 20+ 模型提供商（Anthropic、OpenAI、Ollama 等）
+    ├── providers.md             # 35+ 模型提供商（Anthropic、OpenAI、Google、Ollama 等）
     ├── queue.md                 # 命令队列：steer/followup/collect 模式
     ├── security.md              # 认证、访问控制、加固基线
     ├── streaming.md             # 块流式传输、分块、合并、预览模式

@@ -15,6 +15,8 @@ OpenClaw detects the provider from available API keys:
 1. Brave Search API (`BRAVE_API_KEY`)
 2. Perplexity (via OpenRouter or direct)
 3. Gemini (Google Search grounding)
+4. Grok (`GROK_API_KEY`)
+5. Kimi (`KIMI_API_KEY`)
 
 ### Explicit Provider
 
@@ -23,7 +25,7 @@ OpenClaw detects the provider from available API keys:
   tools: {
     web: {
       search: {
-        provider: "brave",      // "brave" | "perplexity" | "gemini"
+        provider: "brave",      // "brave" | "perplexity" | "gemini" | "grok" | "kimi"
         apiKey: "${BRAVE_API_KEY}",
       },
     },
@@ -115,7 +117,7 @@ Notes:
 
 ### Requirements
 
-- A search API key (Brave, Perplexity, or Gemini).
+- A search API key (Brave, Perplexity, Gemini, Grok, or Kimi).
 
 ### Config
 
@@ -144,6 +146,15 @@ Notes:
 ### Requirements
 
 - No API key needed (fetches pages directly).
+- Optional: `FIRECRAWL_API_KEY` for anti-bot fallback.
+
+### Defaults
+
+| Setting | Default |
+|---|---|
+| `maxChars` | 50000 |
+| `timeoutSeconds` | 30 |
+| `cacheTtlMinutes` | 15 |
 
 ### Config
 
@@ -152,12 +163,22 @@ Notes:
   tools: {
     web: {
       fetch: {
-        // Optional config
+        maxChars: 50000,
+        timeoutSeconds: 30,
+        cacheTtlMinutes: 15,
       },
     },
   },
 }
 ```
+
+### Firecrawl Fallback
+
+Firecrawl is used as an anti-bot fallback for `web_fetch`. When the default Readability extraction fails (e.g. bot-protected pages), the pipeline falls back to Firecrawl for content extraction.
+
+Processing pipeline: Fetch -> Readability extraction -> Firecrawl fallback -> Cache (15 min)
+
+Requires `FIRECRAWL_API_KEY` environment variable.
 
 ### Tool Parameters
 

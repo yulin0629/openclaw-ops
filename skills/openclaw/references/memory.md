@@ -9,8 +9,10 @@
 - [Vector Memory Search](#vector-memory-search)
 - [Hybrid Search (BM25 + Vector)](#hybrid-search-bm25--vector)
 - [MMR Re-Ranking (Diversity)](#mmr-re-ranking-diversity)
+- [Temporal Decay](#temporal-decay)
 - [Additional Memory Paths](#additional-memory-paths)
 - [Embedding Providers](#embedding-providers)
+- [Multimodal Memory (Gemini)](#multimodal-memory-gemini)
 - [Compaction](#compaction)
 - [Session Pruning](#session-pruning)
 - [Configuration Reference](#configuration-reference)
@@ -171,6 +173,21 @@ With MMR (λ=0.7):
 3. memory/2026-02-05.md (0.78) ← AdGuard DNS (diverse!)
 ```
 
+## Temporal Decay
+
+Temporal decay reduces the weight of older memories in search results.
+
+| Age | Retention |
+|---|---|
+| Today | 100% |
+| 7 days ago | ~84% |
+| 30 days ago | 50% |
+| 90 days ago | 12.5% |
+
+- Evergreen files (MEMORY.md, non-dated files) are never decayed
+- Enable via `query.hybrid.temporalDecay.enabled: true`
+- Configure half-life: `query.hybrid.temporalDecay.halfLifeDays: 30` (default)
+
 ## Additional Memory Paths
 
 ```json5
@@ -204,6 +221,10 @@ With MMR (λ=0.7):
 ### Embedding Cache
 
 Embeddings are cached to avoid re-computing on unchanged content. Cache is per-chunk keyed by content hash.
+
+## Multimodal Memory (Gemini)
+
+Index image and audio files using Gemini embedding 2. Enables semantic search over visual and audio content alongside text memories.
 
 ## Compaction
 
@@ -299,12 +320,15 @@ Separate from compaction. See: [Session Pruning](https://docs.openclaw.ai/concep
         
         // Search tuning
         query: {
-          hybrid: true,               // Enable hybrid BM25 + vector
-          vectorWeight: 0.7,
-          textWeight: 0.3,
+          hybrid: {
+            enabled: true,
+            vectorWeight: 0.7,
+            textWeight: 0.3,
+            mmr: { enabled: false, lambda: 0.7 },
+            temporalDecay: { enabled: false, halfLifeDays: 30 },
+          },
           maxResults: 10,
           candidateMultiplier: 3,
-          lambda: 0.7,                // MMR diversity factor
         },
         
         // Additional indexed paths

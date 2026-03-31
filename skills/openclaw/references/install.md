@@ -13,7 +13,7 @@
 
 ## System Requirements
 
-- **Node 22+** (the installer script installs it if missing)
+- **Node 24 recommended (Node 22.16+ also supported)** (the installer script installs it if missing)
 - **macOS, Linux, or Windows** (WSL2 recommended for Windows)
 - `pnpm` only needed for building from source
 
@@ -72,17 +72,41 @@ pnpm link --global       # Link the CLI
 openclaw onboard --install-daemon
 ```
 
+### Docker (Optional)
+
+For isolated or containerized environments only.
+
+**Prerequisites:**
+- Docker Desktop or Docker Engine with Compose v2
+- 2 GB RAM minimum
+
+**Setup:**
+
+```bash
+./scripts/docker/setup.sh
+```
+
+**Health endpoints** (unauthenticated):
+- `/healthz` — liveness check
+- `/readyz` — readiness check
+
+### Nix
+
+```bash
+nix profile install github:openclaw/openclaw
+```
+
+See: https://docs.openclaw.ai/install/nix
+
 ### Other Install Methods
 
 | Method | Description |
 |---|---|
-| **Docker** | Containerized or headless deployments |
 | **Podman** | Rootless container via `setup-podman.sh` |
-| **Nix** | Declarative install via Nix |
 | **Ansible** | Automated fleet provisioning |
 | **Bun** | CLI-only usage via Bun runtime |
 
-See: https://docs.openclaw.ai/install/docker, /podman, /nix, /ansible, /bun
+See: https://docs.openclaw.ai/install/podman, /ansible, /bun
 
 ## After Install
 
