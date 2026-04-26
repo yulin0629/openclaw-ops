@@ -275,7 +275,7 @@ Requirements:
 - Entry files can be `.js` or `.ts` (jiti loads at runtime).
 - `openclaw plugins install <npm-spec>` uses `npm pack`, extracts to `~/.openclaw/extensions/<id>/`.
 - Scoped packages are normalized to the unscoped id for `plugins.entries.*`.
-- Security: `openclaw plugins install` uses `npm install --ignore-scripts` to prevent lifecycle script execution.
+- Security: npm plugin installs can execute package lifecycle scripts during dependency installation; only install trusted packages.
 
 ### Package Packs
 

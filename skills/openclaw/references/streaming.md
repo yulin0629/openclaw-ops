@@ -49,7 +49,7 @@ Model output
 ```
 
 Channel-level overrides:
-- `*.blockStreaming`: forces `"on"`/`"off"` per channel
+- `*.blockStreaming`: forces `true`/`false` per channel
 - `*.textChunkLimit`: hard character cap per channel
 - `*.chunkMode`: `length` (default) or `newline` (splits on blank lines)
 - `channels.discord.maxLinesPerMessage`: default 17

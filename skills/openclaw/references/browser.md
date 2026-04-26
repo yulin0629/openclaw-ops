@@ -45,6 +45,7 @@ Note: `tools.alsoAllow: ["browser"]` does NOT load the plugin — it only adjust
 
 - **openclaw-managed**: Dedicated Chromium instance with own user data dir + CDP port.
 - **existing-session**: Attach to a running Chromium browser via Chrome DevTools MCP (e.g., `user`, `brave` profiles).
+- **extension-relay**: Attach through the local browser relay exposed by the OpenClaw Browser Relay extension.
 - **remote**: Explicit CDP URL (browser running elsewhere).
 
 Notes:
