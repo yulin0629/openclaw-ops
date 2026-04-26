@@ -99,7 +99,7 @@ openclaw browser --browser-profile user snapshot --format ai
     },
     remoteCdpTimeoutMs: 1500,        // remote CDP HTTP timeout
     remoteCdpHandshakeTimeoutMs: 3000, // remote CDP WebSocket timeout
-    defaultProfile: "chrome",         // "openclaw" for managed browser
+    defaultProfile: "openclaw",      // use "user" to attach your real browser
     color: "#FF4500",
     headless: false,
     noSandbox: false,

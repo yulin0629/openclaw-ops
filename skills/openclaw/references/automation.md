@@ -6,6 +6,7 @@
 - [Webhooks](#webhooks)
 - [Gmail Pub/Sub](#gmail-pubsub)
 - [Standing Orders](#standing-orders)
+- [Background Tasks](#background-tasks)
 - [Hooks](#hooks)
 
 ---
@@ -331,8 +332,6 @@ Each program requires:
 ### Execution Discipline
 
 Every task follows: Execute -> Verify -> Report.
-
----
 
 ---
 

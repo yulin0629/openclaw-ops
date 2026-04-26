@@ -183,7 +183,7 @@ Plugins access core helpers through `api.runtime`:
 // TTS
 const result = await api.runtime.tts.textToSpeech({ text: "Hello", cfg: api.config });
 const telephony = await api.runtime.tts.textToSpeechTelephony({ text: "Hello", cfg: api.config });
-const voices = await api.runtime.tts.listVoices(cfg);
+const voices = await api.runtime.tts.listVoices(api.config);
 
 // Media Understanding
 await api.runtime.mediaUnderstanding.describeImageFile({ path, model });

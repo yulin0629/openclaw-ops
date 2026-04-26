@@ -90,15 +90,7 @@ Detailed instructions here...
 Skills filter at load time using metadata gates:
 
 ```json
-"metadata": {
-  "openclaw": {
-    "requires": {
-      "bins": ["ffmpeg"],
-      "env": ["OPENAI_API_KEY"],
-      "config": ["channels.telegram.botToken"]
-    }
-  }
-}
+"metadata": {"openclaw":{"requires":{"bins":["ffmpeg"],"env":["OPENAI_API_KEY"],"config":["channels.telegram.botToken"]}}}
 ```
 
 Available gates:
@@ -117,19 +109,7 @@ Available gates:
 Skills can define installation methods for missing dependencies:
 
 ```json
-"metadata": {
-  "openclaw": {
-    "install": [
-      {
-        "id": "brew",
-        "kind": "brew",
-        "formula": "ffmpeg",
-        "bins": ["ffmpeg"],
-        "label": "Install FFmpeg via Homebrew"
-      }
-    ]
-  }
-}
+"metadata": {"openclaw":{"install":[{"id":"brew","kind":"brew","formula":"ffmpeg","bins":["ffmpeg"],"label":"Install FFmpeg via Homebrew"}]}}
 ```
 
 Supported installer kinds: `brew`, `node`, `go`, `uv`, `download`. Installers support platform filtering via `os` array.
