@@ -132,7 +132,7 @@ Auth is **required by default** when binding to non-loopback.
 {
   gateway: {
     auth: {
-      mode: "token",                        // "token", "password", or "trusted-proxy"
+      mode: "token",                        // "none" | "token" | "password" | "trusted-proxy"
       token: "replace-with-long-random-token",
       // OR
       password: "your-password",

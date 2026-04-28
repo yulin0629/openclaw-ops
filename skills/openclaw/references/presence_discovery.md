@@ -27,7 +27,7 @@ Lightweight, best-effort view of the Gateway and connected clients.
 
 1. **Gateway self entry**: Always seeded at startup so UIs show the gateway host
 2. **WebSocket connections**: Clients register presence on successful handshake
-3. **CLI**: Short one-off commands — `cli` mode is not turned into a presence entry
+3. **CLI**: `cli` mode clients are intentionally excluded from presence entries (to avoid spamming the Instances list); `cli` is a valid protocol `mode` value but the Gateway does not upsert a presence entry for it
 4. **Node connections**: Nodes with `role: node` create presence entries
 5. **System events**: Clients send richer periodic beacons via `system-event` method
 
