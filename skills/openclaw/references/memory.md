@@ -339,6 +339,36 @@ Separate from compaction. See: [Session Pruning](https://docs.openclaw.ai/concep
 }
 ```
 
+## Memory Backends
+
+Four backends are available:
+
+| Backend | Description | Setup |
+|---|---|---|
+| **Builtin** (default) | SQLite-based with keyword + vector + hybrid search | No extra deps |
+| **QMD** | Local-first sidecar with reranking, query expansion, directory indexing | Install QMD CLI |
+| **LanceDB** | Bundled LanceDB-backed memory with OpenAI-compatible embeddings and Ollama support | No extra deps |
+| **Honcho** | AI-native cross-session memory with user modeling, semantic search, multi-agent awareness | Plugin install |
+
+### Honcho Backend
+
+Install the Honcho plugin for AI-native cross-session memory:
+
+```bash
+openclaw plugins install @honcho-ai/openclaw-honcho
+openclaw honcho setup
+```
+
+Honcho provides user modeling, semantic search across sessions, and multi-agent awareness. See [Honcho docs](https://docs.openclaw.ai/concepts/memory-honcho) for configuration.
+
+## CLI Commands
+
+```bash
+openclaw memory status              # Check index status and provider
+openclaw memory search "query"      # Search from the command line
+openclaw memory index --force       # Rebuild the index
+```
+
 ## QMD Backend (Experimental)
 
 An alternative memory backend using [QMD](https://github.com/tobi/qmd) for local vector search.
