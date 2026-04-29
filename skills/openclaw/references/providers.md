@@ -62,13 +62,17 @@ Venice AI is highlighted as a recommended provider for privacy-conscious deploym
 | GLM | `glm/*` | API key (`GLM_API_KEY`) |
 | Qwen | `qwen/*` | OAuth |
 | Deepseek | `deepseek/*` | API key (`DEEPSEEK_API_KEY`) |
-| Perplexity | `perplexity/*` | API key (`PERPLEXITY_API_KEY`) |
 | Synthetic | `synthetic/*` | API key |
 | Amazon Bedrock | `bedrock/*` | AWS credentials |
 | Claude Max API Proxy | `claude-max/*` | Claude Max subscription |
 | Cloudflare AI Gateway | via gateway config | API key |
 | LiteLLM | via unified gateway | API key |
-| Kilo Gateway | via gateway config | API key |
+
+### Web Search Providers
+
+| Provider | Notes |
+|---|---|
+| Perplexity | Web search plugin (`PERPLEXITY_API_KEY`); contributes to `web_search` tool — not a model inference provider |
 
 ### Local Providers
 

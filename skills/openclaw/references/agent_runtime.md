@@ -32,7 +32,7 @@ Up to eight files auto-injected into `agents.defaults.workspace`:
 - Blank files are skipped. Large files are trimmed and truncated with a marker.
 - BOOTSTRAP.md is deleted post-completion; won't recreate unless the entire bootstrap file set is removed.
 - Skip bootstrap: `{ agent: { skipBootstrap: true } }`.
-- Truncation limits: 20,000 chars per file, 150,000 total by default.
+- Truncation limits: 12,000 chars per file, 60,000 total by default.
 
 ### Skills
 

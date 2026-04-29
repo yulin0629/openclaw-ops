@@ -183,15 +183,15 @@ Plugins access core helpers through `api.runtime`:
 // TTS
 const result = await api.runtime.tts.textToSpeech({ text: "Hello", cfg: api.config });
 const telephony = await api.runtime.tts.textToSpeechTelephony({ text: "Hello", cfg: api.config });
-const voices = await api.runtime.tts.listVoices(api.config);
+const voices = await api.runtime.tts.listVoices({ provider: "elevenlabs", cfg: api.config });
 
 // Media Understanding
-await api.runtime.mediaUnderstanding.describeImageFile({ path, model });
-await api.runtime.mediaUnderstanding.describeVideoFile({ path, model });
-await api.runtime.mediaUnderstanding.transcribeAudioFile({ path, model });
+await api.runtime.mediaUnderstanding.describeImageFile({ filePath: "path/to/image.jpg", cfg: api.config, agentDir: api.agentDir });
+await api.runtime.mediaUnderstanding.describeVideoFile({ filePath: "path/to/video.mp4", cfg: api.config, agentDir: api.agentDir });
+await api.runtime.mediaUnderstanding.transcribeAudioFile({ filePath: "path/to/audio.mp3", cfg: api.config, agentDir: api.agentDir });
 
 // Subagent (requires plugins.entries.<id>.subagent.allowModelOverride: true)
-await api.runtime.subagent.run({ task, model });
+await api.runtime.subagent.run({ sessionKey: "my-sub-session", message: "perform subtask" });
 
 // Web Search
 const providers = await api.runtime.webSearch.listProviders();

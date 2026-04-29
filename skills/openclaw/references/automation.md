@@ -167,7 +167,7 @@ Use a named session to maintain context across runs:
     maxConcurrentRuns: 1,
     retry: {
       maxAttempts: 3,
-      backoffMs: [30000, 60000, 300000],
+      backoffMs: [60000, 120000, 300000],
       retryOn: ["rate_limit", "overloaded", "network", "server_error"],
     },
     webhookToken: "your-token",

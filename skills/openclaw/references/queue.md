@@ -51,13 +51,6 @@ Auto-reply runs can be expensive (LLM calls) and collide when multiple inbound m
         whatsapp: "collect",
       },
     },
-    inbound: {
-      debounceMs: 2000,          // Inbound debounce (separate from queue)
-      byChannel: {
-        whatsapp: 5000,
-        slack: 1500,
-      },
-    },
   },
 }
 ```

@@ -40,7 +40,7 @@ clawhub sync --all                   # Scan + publish updates
 
 ```bash
 # 1. Create directory
-mkdir -p ~/.openclaw/workspace/skills/my_skill
+mkdir -p ~/.openclaw/workspace/skills/my-skill
 
 # 2. Write SKILL.md (see format below)
 
@@ -61,7 +61,7 @@ Skills use `SKILL.md` with YAML frontmatter:
 
 ```markdown
 ---
-name: my_skill
+name: my-skill
 description: One-line description shown to the agent
 ---
 # My Skill
@@ -73,7 +73,7 @@ Detailed instructions here...
 
 | Field | Required | Description |
 |---|---|---|
-| `name` | Yes | Unique identifier (snake_case) |
+| `name` | Yes | Unique identifier (kebab-case) |
 | `description` | Yes | One-line description shown to the agent |
 | `homepage` | No | URL shown in macOS Skills UI |
 | `user-invocable` | No | Boolean (default: `true`); exposes as slash command |

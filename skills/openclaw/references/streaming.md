@@ -96,11 +96,12 @@ Config key: `channels.<channel>.streaming`
 | Telegram | yes | yes | yes | maps to `partial` |
 | Discord | yes | yes | yes | maps to `partial` |
 | Slack | yes | yes | yes | yes (native streaming) |
+| Mattermost | yes | yes | yes | yes (native streaming) |
 
 ### Legacy Migration
 
 - Telegram/Discord: `streamMode` + boolean `streaming` auto-migrate to `streaming` enum
-- Slack: `streamMode` → `streaming` enum; boolean `streaming` → `nativeStreaming`
+- Slack: `streamMode` → `streaming.mode`; boolean `streaming` → `streaming.mode` + `streaming.nativeTransport`; legacy `nativeStreaming` → `streaming.nativeTransport`
 
 ## Configuration Patterns
 
