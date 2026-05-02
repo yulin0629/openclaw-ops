@@ -4,6 +4,8 @@
 
 A comprehensive **Agent Skill** for installing, configuring, operating, and troubleshooting [OpenClaw](https://github.com/openclaw/openclaw) — a self-hosted, multi-channel AI agent gateway.
 
+Target OpenClaw release: **2026.4.29** (`openclaw@latest` on npm at the time of this refresh).
+
 ## What is This?
 
 This is an Agent Skill designed for AI coding assistants (like Claude with Antigravity). Once installed, the AI assistant gains deep knowledge of OpenClaw and can help you with:
@@ -18,6 +20,7 @@ This is an Agent Skill designed for AI coding assistants (like Claude with Antig
 - **Plugin System** — Capability model, context engine plugins, SDK, hook API
 - **Automation** — Cron jobs, standing orders, background tasks, webhooks, hooks
 - **Security Hardening** — Audit, lock down access, manage tokens, trusted proxy, incident response
+- **2026.4.29 Operations** — Backups, device pairing, MCP bridge, debug proxy, task state, commitments, directory lookup
 - **Troubleshooting** — Diagnose and fix common errors from CLI and Gateway
 
 ## Skill Structure
@@ -28,13 +31,20 @@ OpenClaw-Skill/
 └── references/              
     ├── architecture.md          # Gateway architecture, wire protocol, pairing, invariants
     ├── agent_runtime.md         # Agent runtime, bootstrap, agent loop, hooks, timeouts
+    ├── backup.md                # Backup archives for config, credentials, sessions, workspaces
     ├── bonjour.md               # Bonjour/mDNS: TXT keys, wide-area DNS-SD, debugging
+    ├── capability.md            # infer/capability CLI for model, image, audio, TTS, video, web, embeddings
     ├── channel_routing.md       # Channel routing, session keys, Mattermost, BlueBubbles
     ├── channels.md              # 20+ channel setup guides (WhatsApp, Telegram, Discord, etc.)
     ├── clawhub.md               # ClawHub public skill registry, CLI commands
+    ├── commitments.md           # Inferred follow-up commitments and heartbeat delivery
+    ├── devices.md               # Device pairing and auth token management
+    ├── directory.md             # Contact, peer, group, and account ID lookup
+    ├── dns.md                   # Wide-area discovery helpers (Tailscale + CoreDNS)
     ├── gateway_internals.md     # Network model, lock, health, doctor, logging, background exec
     ├── gateway_ops.md           # Gateway operations, service management
     ├── heartbeat.md             # Heartbeat: config, delivery, visibility, HEARTBEAT.md
+    ├── mcp.md                   # MCP config and OpenClaw channel bridge over stdio
     ├── media.md                 # Media: camera capture, images, audio/voice notes, transcription
     ├── memory.md                # Memory system, vector search, hybrid BM25, QMD backend
     ├── model_failover.md        # Model failover, OAuth, auth profiles, cooldowns
@@ -43,16 +53,18 @@ OpenClaw-Skill/
     ├── polls.md                 # Polls (Telegram, WhatsApp, Discord, MS Teams)
     ├── presence_discovery.md    # Presence system, discovery (Bonjour/Tailscale)
     ├── providers.md             # 35+ model providers (Anthropic, OpenAI, Google, Ollama, etc.)
+    ├── proxy.md                 # Debug proxy capture and traffic inspection
     ├── queue.md                 # Command queue: steer/followup/collect modes
     ├── security.md              # Auth, access control, hardening baseline
     ├── streaming.md             # Block streaming, chunking, coalescing, preview modes
+    ├── tasks.md                 # Durable background tasks and TaskFlow diagnostics
     ├── thinking.md              # Thinking levels, verbose directives, reasoning visibility
     ├── tui.md                   # TUI: keyboard shortcuts, slash commands, pickers, local shell
     ├── voice.md                 # Talk Mode (voice interaction) + Voice Wake (wake words)
-    └── ... (51 reference files total)
+    └── ... (60 reference files total)
 ```
 
-**Total: ~6,000+ lines** of structured reference covering all core OpenClaw functionality.
+**Total: ~7,000+ lines** of structured reference covering core OpenClaw functionality through 2026.4.29.
 
 ## Installation
 
@@ -87,6 +99,9 @@ Once installed, just ask naturally:
 | "Add a second agent for work" | Creates agent, sets up workspace, configures bindings, restarts |
 | "Spawn a Codex ACP session" | Configures acpx plugin, sets permissions, spawns bound session |
 | "Attach browser to my Chrome" | Sets up `user` profile with Chrome MCP existing-session driver |
+| "Back up OpenClaw before upgrading" | Runs `openclaw backup create --verify` and validates the archive |
+| "Show stuck background work" | Uses `openclaw tasks list`, `tasks audit`, logs, and doctor |
+| "Expose OpenClaw over MCP" | Configures or runs `openclaw mcp serve` with gateway auth |
 | "EADDRINUSE error" | Identifies port conflict, runs `openclaw gateway --force` or changes port |
 
 ## Key Commands Quick Reference
@@ -94,13 +109,17 @@ Once installed, just ask naturally:
 ```bash
 # Status & Health
 openclaw status                    # Overall status
+openclaw status --all              # Pasteable full diagnostic
 openclaw gateway status            # Gateway daemon status
+openclaw gateway probe             # Reachability + discovery + health
 openclaw doctor                    # Diagnose issues
 openclaw channels status --probe   # Channel health
+openclaw tasks audit               # Background task/TaskFlow health
 
 # Gateway Management
 openclaw gateway install           # Install as system service
 openclaw gateway start/stop/restart
+openclaw backup create --verify    # Create verified backup
 
 # Configuration
 openclaw config get <path>         # Read config value
@@ -110,16 +129,25 @@ openclaw configure                 # Interactive wizard
 # Security
 openclaw security audit            # Check security posture
 openclaw security audit --fix      # Auto-fix issues
+openclaw exec-policy show          # Effective exec policy and approvals
 openclaw secrets reload            # Reload secret refs
 
 # Channels
 openclaw channels add              # Add channel (wizard)
 openclaw channels login            # WhatsApp QR pairing
 openclaw channels list             # Show configured channels
+openclaw directory peers list      # Lookup contact/user IDs
+openclaw mcp serve                 # Expose channels over MCP stdio
 
 # Models
 openclaw models set <model>        # Set default model
 openclaw models status --probe     # Check auth status
+openclaw infer list                # Provider-backed capabilities
+
+# 2026.4.29 Operations
+openclaw commitments --all         # Inferred follow-up commitments
+openclaw devices list              # Pairing requests and paired devices
+openclaw proxy sessions            # Debug proxy captures
 ```
 
 ## Documentation Source
@@ -131,6 +159,11 @@ This skill is built from the official [OpenClaw Documentation](https://docs.open
 - [Agent Runtime](https://docs.openclaw.ai/concepts/agent)
 - [Agent Loop](https://docs.openclaw.ai/concepts/agent-loop)
 - [Configuration](https://docs.openclaw.ai/gateway/configuration)
+- [CLI Reference](https://docs.openclaw.ai/cli)
+- [Backup CLI](https://docs.openclaw.ai/cli/backup)
+- [Directory CLI](https://docs.openclaw.ai/cli/directory)
+- [Infer CLI](https://docs.openclaw.ai/cli/infer)
+- [DNS CLI](https://docs.openclaw.ai/cli/dns)
 - [Channels](https://docs.openclaw.ai/channels)
 - [Model Providers](https://docs.openclaw.ai/providers)
 - [Model Failover & OAuth](https://docs.openclaw.ai/concepts/model-failover)
@@ -156,7 +189,6 @@ This skill is built from the official [OpenClaw Documentation](https://docs.open
 - [Security](https://docs.openclaw.ai/gateway/security)
 - [Formal Verification](https://docs.openclaw.ai/security/formal-verification)
 - [Troubleshooting](https://docs.openclaw.ai/gateway/troubleshooting)
-- [CLI Reference](https://docs.openclaw.ai/cli)
 
 ## License
 

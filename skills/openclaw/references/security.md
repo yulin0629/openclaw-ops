@@ -77,6 +77,16 @@ openclaw security audit --json     # JSON output for scripting
 - **Credential storage**: file permissions, plaintext secrets
 - **Insecure flags**: any `dangerous*` or `allowInsecure*` flags enabled
 
+### 2026.4.29 Operations Checks
+
+```bash
+openclaw exec-policy show          # Compare local config, approvals, effective merge
+openclaw tasks audit               # Inspect stale/broken background task state
+openclaw backup create --verify    # Create a verified recovery point before risky fixes
+```
+
+In 2026.4.29, configured `tools.exec` and `tools.fs` sections do not implicitly widen restrictive profiles (`messaging`, `minimal`). If a restricted profile needs file or exec tools, add explicit `alsoAllow` entries and keep the allowlist narrow.
+
 ## Core Concept: Access Control Before Intelligence
 
 1. **Identity first**: decide who can talk to the bot (DM pairing / allowlists / explicit "open")

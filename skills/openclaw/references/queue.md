@@ -19,12 +19,12 @@ Auto-reply runs can be expensive (LLM calls) and collide when multiple inbound m
 
 | Mode | Behavior |
 |---|---|
-| `steer` | Inject immediately into current run; cancels pending tool calls after next tool boundary; falls back to followup if not streaming |
-| `followup` | Enqueue for next agent turn after current run ends |
-| `collect` | Coalesce all queued messages into single followup turn (default); messages targeting different channels/threads drain individually |
-| `steer-backlog` | Steer now and preserve message for followup turn |
-| `interrupt` (legacy) | Abort active session run; execute newest message |
-| `queue` (legacy alias) | Same as `steer` |
+| `steer` | Default for active-run queueing in 2026.4.29. Drain pending steering messages into the active Pi run at the next model/tool boundary. Falls back to followup if the run cannot be steered. |
+| `followup` | Enqueue for the next agent turn after the current run ends. |
+| `collect` | Coalesce all queued messages into a single followup turn; messages targeting different channels/threads drain individually. |
+| `steer-backlog` | Steer now and preserve the message for a followup turn. |
+| `interrupt` (legacy) | Abort the active run for that session, then run the newest message. |
+| `queue` (legacy) | Preserve the older one-at-a-time steering behavior. |
 
 ## Queue Options
 
@@ -36,14 +36,16 @@ Auto-reply runs can be expensive (LLM calls) and collide when multiple inbound m
 
 `summarize` keeps a short bullet list of dropped messages and injects it as a synthetic followup prompt.
 
+2026.4.29 defaults active-run queueing to `steer` with a 500ms followup fallback debounce. Older examples may still show `collect`; use `collect` only when you want queued messages coalesced into the next separate turn.
+
 ## Configuration
 
 ```json5
 {
   messages: {
     queue: {
-      mode: "collect",
-      debounceMs: 1000,
+      mode: "steer",
+      debounceMs: 500,
       cap: 20,
       drop: "summarize",
       byChannel: {

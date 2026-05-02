@@ -7,6 +7,8 @@ description: Comprehensive guide for installing, configuring, operating, and tro
 
 OpenClaw is a self-hosted, open-source (MIT) gateway that routes AI agents across WhatsApp, Telegram, Discord, Slack, iMessage, Signal, and 15+ other channels simultaneously. It runs on macOS, Linux, or Windows.
 
+Target release for this skill: **OpenClaw 2026.4.29** (`openclaw@latest` on npm as of 2026-05-02). If live docs or `main` mention newer behavior, verify against the installed CLI and local source before applying it.
+
 ## Reference Files
 
 | Reference | Coverage |
@@ -17,6 +19,9 @@ OpenClaw is a self-hosted, open-source (MIT) gateway that routes AI agents acros
 | [exec.md](references/exec.md) | Exec tool: parameters, config, PATH, security, process tool |
 | [exec_approvals.md](references/exec_approvals.md) | Exec approvals: allowlists, safe bins, approval flow |
 | [browser.md](references/browser.md) | Browser plugin: profiles, CDP, Chrome MCP, snapshots, SSRF, Control API |
+| [backup.md](references/backup.md) | Backup create/verify for config, credentials, sessions, and workspaces |
+| [capability.md](references/capability.md) | `infer`/`capability` provider-backed CLI for model, image, audio, TTS, video, web, embedding |
+| [commitments.md](references/commitments.md) | Inferred follow-up commitments and heartbeat delivery |
 | [web_tools.md](references/web_tools.md) | Web tools: Brave, Perplexity, Gemini search providers |
 | [pdf_tool.md](references/pdf_tool.md) | PDF tool: native/fallback modes, config, page filtering |
 | [elevated.md](references/elevated.md) | Elevated mode: /elevated directives, sandbox breakout |
@@ -27,14 +32,18 @@ OpenClaw is a self-hosted, open-source (MIT) gateway that routes AI agents acros
 | [skills.md](references/skills.md) | Skills: locations, config, ClawHub, watcher, token impact |
 | [providers.md](references/providers.md) | Model provider setup |
 | [multi_agent.md](references/multi_agent.md) | Multi-agent routing |
+| [devices.md](references/devices.md) | Device pairing requests and device auth tokens |
 | [nodes.md](references/nodes.md) | Nodes (iOS/Android/macOS/headless) |
 | [security.md](references/security.md) | Security hardening |
 | [secrets.md](references/secrets.md) | Secrets management (SecretRef, vault) |
 | [sandboxing.md](references/sandboxing.md) | Sandboxing (Docker isolation) |
 | [config_reference.md](references/config_reference.md) | Full config field reference |
 | [gateway_ops.md](references/gateway_ops.md) | Gateway operations |
+| [mcp.md](references/mcp.md) | MCP config and OpenClaw channel bridge over stdio |
+| [proxy.md](references/proxy.md) | Debug proxy capture and traffic inspection |
 | [remote_access.md](references/remote_access.md) | Remote access, SSH, Tailscale, web dashboard |
 | [sessions.md](references/sessions.md) | Session management, DM isolation, lifecycle, compaction |
+| [tasks.md](references/tasks.md) | Durable background tasks and TaskFlow diagnostics |
 | [hooks.md](references/hooks.md) | Hooks: internal event hooks, HTTP webhooks, authoring, CLI |
 | [automation.md](references/automation.md) | Cron jobs, webhooks, Gmail Pub/Sub, background tasks, standing orders |
 | [acp_agents.md](references/acp_agents.md) | ACP agents: spawn external AI runtimes (Codex, Claude, Gemini, 14+ harnesses) |
@@ -55,6 +64,8 @@ OpenClaw is a self-hosted, open-source (MIT) gateway that routes AI agents acros
 | [polls.md](references/polls.md) | Polls: Telegram, WhatsApp, Discord, MS Teams |
 | [voice.md](references/voice.md) | Talk Mode (voice interaction) + Voice Wake (wake words) |
 | [presence_discovery.md](references/presence_discovery.md) | Presence system, discovery (Bonjour/Tailscale), transports |
+| [directory.md](references/directory.md) | Contact, peer, group, and account ID lookup |
+| [dns.md](references/dns.md) | Wide-area discovery DNS helpers (Tailscale + CoreDNS) |
 | [gateway_internals.md](references/gateway_internals.md) | Network model, gateway lock, health checks, doctor, logging, background exec |
 | [heartbeat.md](references/heartbeat.md) | Heartbeat: config, delivery, visibility, HEARTBEAT.md, per-agent |
 | [bonjour.md](references/bonjour.md) | Bonjour/mDNS: TXT keys, wide-area DNS-SD, debugging, failure modes |
@@ -78,6 +89,9 @@ OpenClaw is a self-hosted, open-source (MIT) gateway that routes AI agents acros
 | `~/.openclaw/skills/` | Managed/local skills |
 | `~/.openclaw/agents/<id>/qmd/` | QMD memory backend state |
 | `~/.openclaw/agents/<id>/agent/auth-profiles.json` | Auth profiles + OAuth tokens |
+| `~/.openclaw/exec-approvals.json` | Host/node exec approval allowlist state |
+| `~/.openclaw/devices/` | Paired device and device token state |
+| `~/.openclaw/logs/` | Gateway logs |
 | `OPENCLAW_CONFIG_PATH` | Override config location |
 | `OPENCLAW_STATE_DIR` | Override state directory |
 | `OPENCLAW_HOME` | Override home directory |
@@ -86,23 +100,29 @@ OpenClaw is a self-hosted, open-source (MIT) gateway that routes AI agents acros
 
 ```
 openclaw status                    # Overall status
+openclaw status --all              # Pasteable full diagnostic
+openclaw status --deep             # Deep channel/session status
 openclaw gateway status            # Gateway daemon status
-openclaw gateway status --deep     # Deep scan including system services
+openclaw gateway probe             # Reachability + discovery + health
 openclaw doctor                    # Diagnose config/service issues
 openclaw doctor --fix              # Auto-fix safe issues
 openclaw logs --follow             # Tail gateway logs
 openclaw channels status --probe   # Channel health check
 openclaw security audit            # Security posture check
 openclaw security audit --fix      # Auto-fix security issues
+openclaw exec-policy show          # Effective exec policy and approvals merge
+openclaw backup create --verify    # Create and verify a recovery archive
+openclaw tasks audit               # Stale/broken task and TaskFlow state
+openclaw commitments --all         # Inferred follow-up commitments
 openclaw update                    # Self-update
 openclaw dashboard                 # Open Control UI in browser
 openclaw tui                       # Terminal UI (interactive REPL)
 openclaw agent                     # Direct agent interaction via CLI
 openclaw health                    # Health check
-openclaw usage                     # Usage tracking
 openclaw config validate           # Validate config file
 openclaw config file               # Print active config path
-openclaw sessions cleanup          # Session disk cleanup
+openclaw gateway usage-cost        # Usage cost from session logs
+openclaw sessions cleanup          # Session store/transcript cleanup
 openclaw agents bindings           # Agent-channel bindings
 openclaw agents bind               # Bind agent to account
 openclaw agents unbind             # Unbind agent
@@ -117,9 +137,13 @@ openclaw tasks show <id>           # Show specific task details
 openclaw tasks cancel <id>         # Cancel a running task
 openclaw tasks audit               # Identify problematic task runs
 openclaw agent --message "..."     # Run single agent turn (scripted/testing)
+openclaw directory peers list      # Lookup contact/user IDs
+openclaw mcp serve                 # Expose OpenClaw channels over MCP stdio
+openclaw infer list                # List provider-backed capabilities
 openclaw nodes pending             # List pending pairing requests
 openclaw nodes approve <id>        # Approve node pairing
 openclaw nodes status              # Show all paired nodes
+openclaw devices list              # Device pairing requests + paired devices
 openclaw health --json             # Full health snapshot (JSON)
 openclaw message send --media <p>  # Send media message
 ```
@@ -136,11 +160,13 @@ openclaw message send --media <p>  # Send media message
 
 Always follow this command ladder:
 
-1. `openclaw status` — quick overview
-2. `openclaw gateway status` — daemon running? RPC probe ok?
-3. `openclaw logs --follow` — watch for errors
-4. `openclaw doctor` — config/service diagnostics
-5. `openclaw channels status --probe` — per-channel health
+1. `openclaw status --all` — pasteable overview across channels, sessions, and recent recipients
+2. `openclaw gateway status` / `openclaw gateway probe` — daemon running, RPC reachable, discovery healthy
+3. `openclaw tasks audit` — stale or broken background tasks, TaskFlows, orphaned subagent recovery
+4. `openclaw logs --follow` — watch gateway errors
+5. `openclaw doctor` — config/service diagnostics and safe repairs
+6. `openclaw channels status --probe` — per-channel health
+7. `openclaw security audit --deep` — live security posture when exposure or tool policy is involved
 
 ### Starting / Restarting Gateway
 
@@ -250,6 +276,7 @@ openclaw agents delete <id>             # Remove agent
 ### Nodes (iOS / Android / macOS / Headless)
 
 For detailed node setup, see [references/nodes.md](references/nodes.md).
+For device pairing and token management, see [references/devices.md](references/devices.md).
 
 ```bash
 openclaw nodes status                   # List connected nodes
@@ -257,6 +284,30 @@ openclaw nodes describe --node <id>     # Node capabilities
 openclaw devices list                   # Pending device approvals
 openclaw devices approve <requestId>    # Approve a device
 openclaw node run --host <host> --port 18789  # Start headless node host
+```
+
+### 2026.4.29 Operations Surfaces
+
+For backups, commitments, tasks, MCP, debug proxy, directory lookup, DNS helpers, and provider-backed inference, see:
+
+- [references/backup.md](references/backup.md)
+- [references/commitments.md](references/commitments.md)
+- [references/tasks.md](references/tasks.md)
+- [references/mcp.md](references/mcp.md)
+- [references/proxy.md](references/proxy.md)
+- [references/directory.md](references/directory.md)
+- [references/dns.md](references/dns.md)
+- [references/capability.md](references/capability.md)
+
+```bash
+openclaw backup create --verify
+openclaw commitments --all
+openclaw tasks list --status running
+openclaw mcp list
+openclaw proxy sessions
+openclaw directory groups list --channel discord
+openclaw dns setup
+openclaw infer image generate --prompt "diagram" --output out.png
 ```
 
 ### Security
@@ -271,6 +322,7 @@ For remote access (SSH, Tailscale, VPN), see [references/remote_access.md](refer
 openclaw security audit                 # Check posture
 openclaw security audit --deep          # Live gateway probe
 openclaw security audit --fix           # Auto-fix safe issues
+openclaw exec-policy show               # Local config + approvals + effective merge
 openclaw secrets reload                 # Re-resolve secret refs
 openclaw secrets audit                  # Scan for plaintext leaks
 ```
@@ -298,7 +350,7 @@ For detailed per-tool documentation, see [references/tools.md](references/tools.
 
 For specific tools, see:
 - [references/exec.md](references/exec.md) — Exec tool deep-dive
-- [references/exec_approvals.md](references/exec_approvals.md) — Exec approvals and allowlists
+- [references/exec_approvals.md](references/exec_approvals.md) — Exec approvals, allowlists, and `exec-policy`
 - [references/browser.md](references/browser.md) — Browser automation deep-dive
 - [references/web_tools.md](references/web_tools.md) — Web search/fetch with multiple providers
 - [references/lobster.md](references/lobster.md) — Lobster workflow runtime
@@ -310,6 +362,10 @@ For specific tools, see:
 For ACP agents (Codex, Claude Code, Gemini CLI, etc.), see [references/acp_agents.md](references/acp_agents.md).
 For Diffs plugin and Firecrawl anti-bot fallback, see [references/diffs_firecrawl.md](references/diffs_firecrawl.md).
 For chat slash commands (/new, /model, /acp, etc.), see [references/slash_commands.md](references/slash_commands.md).
+For CLI MCP bridge, see [references/mcp.md](references/mcp.md).
+For debug proxy capture, see [references/proxy.md](references/proxy.md).
+For durable background task diagnostics, see [references/tasks.md](references/tasks.md).
+For inferred follow-up commitments, see [references/commitments.md](references/commitments.md).
 For thinking levels (/think, /verbose, /reasoning), see [references/thinking.md](references/thinking.md).
 For polls (Telegram, WhatsApp, Discord, MS Teams), see [references/polls.md](references/polls.md).
 For Talk Mode and Voice Wake, see [references/voice.md](references/voice.md).
@@ -383,4 +439,3 @@ For channel routing and session keys, see [references/channel_routing.md](refere
 | `OPENCLAW_SKIP_CRON` | Disable cron scheduler (set to `1`) |
 | `OPENCLAW_HIDE_BANNER` | Suppress banner output |
 | `OPENCLAW_SUPPRESS_NOTES` | Suppress informational notes |
-

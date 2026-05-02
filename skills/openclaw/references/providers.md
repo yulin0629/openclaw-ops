@@ -53,7 +53,7 @@ Venice AI is highlighted as a recommended provider for privacy-conscious deploym
 | xAI | `xai/*` | API key (`XAI_API_KEY`) |
 | GitHub Copilot | `github-copilot/*` | GitHub token (`GH_TOKEN`) |
 | Hugging Face | `huggingface/*` | API key (`HF_TOKEN`) |
-| NVIDIA | `nvidia/*` | API key (`NVIDIA_API_KEY`) |
+| NVIDIA | `nvidia/*` | Added in 2026.4.29 with API-key onboarding (`NVIDIA_API_KEY`), static catalog metadata, and literal model-ref picker support |
 | Volcengine | `volcengine/*` | API key (`VOLCANO_ENGINE_API_KEY`) |
 | BytePlus | `byteplus/*` | API key (`BYTEPLUS_API_KEY`) |
 | Cerebras | `cerebras/*` | API key (`CEREBRAS_API_KEY`) |
@@ -172,7 +172,7 @@ Precedence: Job payload → Per-agent params → Agent defaults → Model defaul
 
 | Provider | Default |
 |---|---|
-| Anthropic Claude 4.6 (+ Bedrock) | `adaptive` |
+| Anthropic Claude 4.6 (+ Bedrock, including Bedrock Opus 4.7 parity in 2026.4.29) | `adaptive` |
 | Other reasoning-capable models | `low` |
 
 Override per-agent: `agents.list[].thinking` or per-request via `/model`.
@@ -222,6 +222,13 @@ openclaw models status --check      # Exit 1=expired/missing, 2=expiring
 openclaw models status --probe
 openclaw models status --probe-provider anthropic
 ```
+
+## 2026.4.29 Provider Notes
+
+- NVIDIA has API-key onboarding, static catalog metadata, and literal model-ref picker support. Use `nvidia/<model>` refs and verify auth with `openclaw models status --probe`.
+- Bedrock Opus 4.7 has thinking parity with the rest of the Anthropic/Bedrock reasoning path.
+- OpenAI Codex and OpenAI-compatible endpoints received safer replay/streaming behavior. Do not paper over Codex OAuth failures by adding stale explicit model config; verify with `openclaw models status --probe` first.
+- Manifest-backed model/auth paths are faster and safer for packaged installs. Prefer CLI-managed auth profiles over hand-edited provider entries when possible.
 
 ## Transcription Providers
 

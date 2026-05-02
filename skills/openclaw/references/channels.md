@@ -41,6 +41,16 @@ Feishu/Lark, Google Chat, Mattermost, Microsoft Teams, Synology Chat, LINE, Next
 
 Install plugins: `openclaw plugins install <name>`.
 
+### 2026.4.29 Channel Notes
+
+- Slack: Block Kit limit handling and bot-authored room message safeguards were tightened.
+- Telegram: proxy/webhook/polling/send resilience improved; streaming previews use durable message edits.
+- Discord: startup and rate-limit handling improved.
+- WhatsApp: delivery and liveness paths received reliability fixes.
+- Signal: group allowlists can match inbound group IDs; media caps and SSE receive behavior were improved.
+- Microsoft Teams, Matrix, Feishu, QQBot, and Yuanbao received edge-case fixes or docs/catalog updates.
+- `messages.visibleReplies` can require visible output to go through `message(action=send)`, while `messages.groupChat.visibleReplies` remains available as a group/channel override.
+
 ## WhatsApp
 
 ```bash

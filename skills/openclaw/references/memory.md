@@ -13,6 +13,8 @@
 - [Additional Memory Paths](#additional-memory-paths)
 - [Embedding Providers](#embedding-providers)
 - [Multimodal Memory (Gemini)](#multimodal-memory-gemini)
+- [People-Aware Wiki (2026.4.29)](#people-aware-wiki-2026429)
+- [Active Memory Filters (2026.4.29)](#active-memory-filters-2026429)
 - [Compaction](#compaction)
 - [Session Pruning](#session-pruning)
 - [Configuration Reference](#configuration-reference)
@@ -225,6 +227,49 @@ Embeddings are cached to avoid re-computing on unchanged content. Cache is per-c
 ## Multimodal Memory (Gemini)
 
 Index image and audio files using Gemini embedding 2. Enables semantic search over visual and audio content alongside text memories.
+
+## People-Aware Wiki (2026.4.29)
+
+OpenClaw 2026.4.29 expands memory into a people-aware wiki. The agent can maintain person metadata, canonical aliases, person cards, relationship graphs, privacy/provenance reports, and evidence-kind drilldowns.
+
+Operational guidance:
+- Treat person records as sensitive long-term memory, not casual chat context.
+- Prefer provenance-backed claims over inferred relationship summaries.
+- Use raw-claim and source-evidence views when debugging why the agent remembers a person fact.
+- Keep broad group/channel recall disabled unless the deployment explicitly allows it.
+
+## Active Memory Filters (2026.4.29)
+
+Active Memory can be filtered per conversation with optional allow/deny chat IDs. Use this when a gateway serves multiple DMs, groups, or channels but only selected conversations should participate in recall.
+
+These keys belong to the `active-memory` plugin config, not `agents.defaults.memorySearch`.
+
+```json5
+{
+  plugins: {
+    entries: {
+      "active-memory": {
+        enabled: true,
+        config: {
+          allowedChatTypes: ["direct", "group"],
+          allowedChatIds: ["ou_operator_open_id", "oc_small_ops_group"],
+          deniedChatIds: ["oc_large_public_group"],
+        },
+      },
+    },
+  },
+}
+```
+
+`allowedChatIds` and `deniedChatIds` use the resolved channel-native conversation ID from the persistent session key. Examples include Feishu `chat_id` / `open_id` (`oc_xxx`, `ou_xxx`), Telegram chat IDs, and Slack channel IDs. Do not invent `channel:id` prefixes unless that exact string is the resolved conversation ID.
+
+When `allowedChatIds` is non-empty, it narrows every allowed chat type at once. If a session's conversation ID cannot be resolved, Active Memory skips the turn instead of guessing. `deniedChatIds` always wins over both `allowedChatTypes` and `allowedChatIds`.
+
+If the hidden memory sub-agent times out, 2026.4.29 can return bounded partial recall summaries instead of discarding all recovered context. Treat partial recall as useful but incomplete evidence.
+
+## REM Preview Diagnostics (2026.4.29)
+
+Gateway memory diagnostics include a read-only `doctor.memory.remHarness` RPC for bounded REM preview output. Use it for operator diagnostics only; it should not mutate memory.
 
 ## Compaction
 

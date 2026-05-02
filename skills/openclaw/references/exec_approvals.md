@@ -11,6 +11,21 @@ Exec approvals apply when `host=gateway` or `host=node` (not sandbox).
 - Stored in `~/.openclaw/exec-approvals.json`.
 - Config keys under `tools.exec.*`.
 
+## CLI Policy Sync (2026.4.29)
+
+`openclaw exec-policy` shows or synchronizes the requested local exec policy with host approvals:
+
+```bash
+openclaw exec-policy show
+openclaw exec-policy show --json
+openclaw exec-policy preset cautious
+openclaw exec-policy preset deny-all
+openclaw exec-policy preset yolo
+openclaw exec-policy set
+```
+
+Use `show` before changing policy. The command reports local config policy, host approvals, and the effective merge, which is more reliable than inspecting only `openclaw.json` or only `~/.openclaw/exec-approvals.json`.
+
 ## Policy Knobs
 
 ### Security (`exec.security`)
@@ -94,4 +109,5 @@ Exec completions generate system events that can trigger heartbeat wakes.
 - Keep the allowlist minimal.
 - Use `security=allowlist` + `ask=on-miss` for a balanced security posture.
 - Use `security=deny` for maximum restriction.
+- In 2026.4.29, configured `tools.exec` and `tools.fs` sections no longer implicitly widen restrictive profiles such as `messaging` or `minimal`. Add explicit `alsoAllow` entries when a restricted profile must use those tools.
 - Review `~/.openclaw/exec-approvals.json` regularly.
